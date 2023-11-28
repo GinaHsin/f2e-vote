@@ -22,14 +22,19 @@
                 <li><a href="#">第10任 立法委員選舉</a></li>
             </ul>
             <form class="region" action="index.html">
-                <select class="city" name="city" v-model="select.city">
+                <select class="city" name="city"><!-- v-model="select.city"-->
                     <option value="">請選擇</option>
-                    <option v-for="c in cityList" 
+                    <!--<option v-for="c in cityList" 
                     :key="c.cityName" :value="c.cityName">
-                    {{ c.cityName }}</option>
+                    {{ c.cityName }}</option>-->
                 </select>
-                <select class="area" name="area" v-model="select.area">
+                <select class="area" name="area"><!--v-model="select.area"-->
                     <option value="">請選擇</option>
+                    <!--<option
+                    :value="a.areaName"
+                    v-for="a in cityList.find((c) => c.CityName === select.city).areaList"
+                    :key="a.areaName"
+                  >{{ a.areaName }}</option>-->
                 </select>
                 <select class="village" name="village">
                     <option value="">請選擇</option>
@@ -143,7 +148,7 @@
         .bindPopup('A pretty CSS popup.<br> Easily customizable.')
         .openPopup();
 
-        const App={
+        /*const App={
             data(){
                 return{
                     select:{},
@@ -323,7 +328,7 @@
                 }
             },
         }
-        Vue.createApp(App).mount('#app')
+        Vue.createApp(App).mount('#app');*/
     </script>
 </body>
 </html>
