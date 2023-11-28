@@ -1,0 +1,234 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*首頁版面設定*/
+*{
+    /*outline: 1px solid black;*/
+    box-sizing: border-box;
+}
+@font-face {
+    font-family: 'Noto_Sans_TC';
+    src: url('Noto_Sans_TC/static/NotoSansTC-Regular.ttf');
+}
+.wrap{
+    width: 1440px;
+    font-family: Noto_Sans_TC;
+    columns: #000;
+    line-height: 1.4;
+}
+/*頁首*/
+.header{
+    height: 72px;
+    padding: 17px 1183px 17px 47px;
+    background: #262E49;
+}
+.header h1{
+    width: 210px;
+    height: 38px;
+    color: #FFF;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+/*頁中*/
+.content{
+    padding: 40px 40px 61.89px 40px;
+    background: #F5F5F5;
+}
+/*總統與立委選舉切換 erection*/
+.erection{
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+.erection li:not(:last-of-type){
+    margin-right: 20px;
+}
+.erection a{
+    height: 36px;
+    display: block;
+    color: #000;
+    text-decoration: none;
+    line-height: 1.2;
+}
+.erection a:hover{
+    border-bottom: 4px solid #262E49;
+}
+/*區域選擇 region*/
+.region{
+    margin-bottom: 80px;
+}
+.region select{
+    width: 156px;
+    height: 36px;
+    padding: 4px 12px;
+    margin-right: 20px;
+    border-radius: 8px;
+    border: 1px solid #E6E6E6;
+    background: #FFF;
+    float: left;
+}
+.btn{
+    width: 88px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: #262E49;
+    float: left;
+}
+.btn span{
+    width: 32px;
+    height: 24px;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 400;
+    float: left;
+    margin-right: 4px;
+}
+.btn img{
+    width: 24px;
+    height: 24px;
+    float: left;
+}
+/*投票 vote*/
+.vote{
+    display: flex;
+    justify-content: space-between;
+}
+.vote-situation{
+    padding: 20px;
+}
+.vote-situation h2{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+.valid-invalid{
+    margin-bottom: 40px;
+}
+.valid-invalid>div{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.img{
+    width: 120px;
+    height: 120px;
+    margin-right: 20px;
+}
+.vote-percent{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+.percent-title{
+    font-size: 16px;
+    font-weight: 400;
+}
+.valid-invalid li{
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.num-title{
+    font-size: 16px;
+    font-weight: 400;
+    margin-right: 8px;
+}
+.vote-num{
+    font-size: 12px;
+    font-weight: 600;
+}
+.party-all>div{
+    margin-bottom: 20px;
+}
+.party-all li{
+    display: flex;
+    margin-bottom: 8px;
+}
+.party-all img{
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+}
+.green-party{
+    padding-right: 20px;
+    border-right: 2px solid #84CB98;
+}
+.blue-party{
+    padding-right: 20px;
+    border-right: 2px solid #8894D8;
+}
+.orange-party{
+    padding-right: 32px;
+    border-right: 2px solid #DFA175;
+}
+.party-all li div:not(:first-of-type){
+    padding-left: 20px;
+}
+.party-percent{
+    font-size: 16px;
+    font-weight: 600;
+}
+.cadidate-num{
+    font-size: 12px;
+    font-weight: 400;
+}
+/*地圖 map*/
+html,body{
+    width: 100%;
+    height: 100%;
+}
+.container{
+    width: 500px;
+}
+#map{
+    width: 100%;
+    height: 100%;
+}

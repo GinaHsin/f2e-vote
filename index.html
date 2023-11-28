@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="all.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.global.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+
+</head>
+<body>
+    <div class="wrap" id="app">
+        <div class="header">
+            <h1>2020 開票地圖</h1>
+        </div>
+        <div class="content">
+            <ul class="erection">
+                <li><a href="#">第15任 總統副總統大選</a></li>
+                <li><a href="#">第10任 立法委員選舉</a></li>
+            </ul>
+            <form class="region" action="index.html">
+                <select class="city" name="city" v-model="select.city">
+                    <option value="">請選擇</option>
+                    <option v-for="c in cityList" 
+                    :key="c.cityName" :value="c.cityName">
+                    {{ c.cityName }}</option>
+                </select>
+                <select class="area" name="area" v-model="select.area">
+                    <option value="">請選擇</option>
+                    <option v-for="a in cityList.find((c) =>
+                        c.cityName === select.city).areaList" 
+                       :key="a.areaName" :value="a.areaName">{{ a.areaName }}</option>
+                </select>
+                <select class="village" name="village">
+                    <option value="">請選擇</option>
+                    <option>請選擇</option>
+                </select>
+                <button class="btn" type="submit">
+                    <span>清除</span>
+                    <img src="images/rotate-cw.png" alt="清除">
+                </button>
+            </form>
+            <div class="vote">
+                <div class="vote-situation">
+                    <h2>投票概況</h2>
+                    <div class="valid-invalid">
+                        <div>
+                            <div class="img"></div>
+                            <div>
+                                <p class="vote-percent">{{ vote-percent }}</p>
+                                <p class="percent-title">投票率</p>
+                            </div>
+                        </div>
+                        <ul>
+                            <li>
+                                <p class="num-title">投票數</p>
+                                <p class="vote-num">{{ vote-num}}票</p>
+                            </li>
+                            <li>
+                                <p class="num-title">無效票數</p>
+                                <p class="vote-num">{{ invalid-num}}票</p>
+                            </li>
+                            <li>
+                                <p class="num-title">有效票數</p>
+                                <p class="vote-num">{{ valid-num}}票</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="party-all">
+                        <div class="img"></div>
+                        <ul>
+                            <li>
+                                <img src="images/3.png" alt="3">
+                                <div class="green-party">
+                                    <p class="party-percent">民主進步黨</p>
+                                    <p class="cadidate-num">蔡英文 | 賴清德</p>
+                                </div>
+                                <div>
+                                    <p class="party-percent">{{ green-percent }}</p>
+                                    <p class="cadidate-num">{{ green-vote}}</p>
+                                </div>
+                            </li>
+                            <li>
+                                <img src="images/2.png" alt="2">
+                                <div class="blue-party">
+                                    <p class="party-percent">中國國民黨</p>
+                                    <p class="cadidate-num">韓國瑜 | 張善政</p>
+                                </div>
+                                <div>
+                                    <p class="party-percent">{{ blue-percent }}</p>
+                                    <p class="cadidate-num">{{ blue-vote}}</p>
+                                </div>
+                            </li>
+                            <li>
+                                <img src="images/1.png" alt="1">
+                                <div class="orange-party">
+                                    <p class="party-percent">親民黨</p>
+                                    <p class="cadidate-num">宋楚瑜 | 余湘</p>
+                                </div>
+                                <div>
+                                    <p class="party-percent">{{ orange-percent }}</p>
+                                    <p class="cadidate-num">{{ orange-vote}}</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="container">
+                    <div id="map"></div>
+                </div>
+                <div class="area">
+                    <div class="tips-select">
+                        <h2>
+                            <img src="" alt="">
+                            <span>小提示</span>
+                        </h2>
+                        <p>點擊選擇縣市、區、村里，可查看選舉結果</p>
+                    </div>
+                    <div class="tips-map">
+                        <h2>
+                            <img src="" alt="">
+                            <span>小提示</span>
+                        </h2>
+                        <p>點擊地圖查看縣市的選舉結果</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+    crossorigin=""></script>
+
+    <script>
+        var map = L.map('map').setView([25.0362191, 121.5639232], 18);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'})
+        .addTo(map);
+
+        L.marker([25.0362191, 121.5639232]).addTo(map)
+        .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+        .openPopup();
+
+        const App={
+            data(){
+                return{
+                    select:{},
+                    cityList:[
+                        {
+                            "cityName": "基隆市",
+                            "areaList": [
+                                {
+                                    "areaName": "仁愛區",
+                                    "insides": ["林泉里","花崗里","虹橋里","水錦里","智仁里","和明里","忠勇里","玉田里","仁德里","博愛里","福仁里","誠仁里",
+                                    "吉仁里","育仁里","英仁里","龍門里","德厚里","曲水里","崇文里","文安里","兆連里","獅球里","書院里","朝棟里","光華里","明德里",
+                                    "同風里","文昌里","新店里"
+                                    ]
+                                },
+                                {
+                                    "areaName": "信義區",
+                                },
+                                {
+                                    "areaName": "中正區",
+                                    "insides": ["長潭里","砂子里","八斗里","碧砂里","新富里","新豐里","平寮里","社寮里","和憲里","海濱里","正濱里","中正里",
+                                    "中濱里","建國里","砂灣里","真砂里","正砂里","中砂里","入船里","正船里","中船里","港通里","義重里","正義里","信義里","德義里"
+                                    ]
+                                },
+                                {
+                                    "areaName": "中山區",
+                                },
+                                {
+                                    "areaName": "安樂區"
+                                },
+                                {
+                                    "areaName": "暖暖區",
+                                    "insides": ["八西里","八中里","八堵里","八南里","過港里","暖暖里","暖同里","暖東里","暖西里","碇內里","碇和里","碇祥里","碇安里"
+                                    ]
+                                },
+                                {
+                                    "areaName": "七堵區",
+                                    "insides": ["長興里","正光里","正明里","富民里","永平里","永安里","八德里","自強里","泰安里","六堵里","堵南里","長安里",
+                                    "堵北里","百福里","實踐里","瑪南里","瑪東里","瑪西里","友一里","友二里"
+                                    ]
+                                }
+                            ],
+                        },
+                        {
+                            "cityName": "臺北市",
+                            "areaList": [
+                                {
+                                    "areaName": "中正區",
+                                },
+                                {
+                                    "areaName": "大同區",
+                                },
+                                {
+                                    "areaName": "中山區",
+                                },
+                                {
+                                    "areaName": "松山區",
+                                },
+                                {
+                                    "areaName": "大安區",
+                                },
+                                {
+                                    "areaName": "萬華區",
+                                },
+                                {
+                                    "areaName": "信義區",
+                                },
+                                {
+                                    "areaName": "士林區",
+                                },
+                                {
+                                    "areaName": "北投區",
+                                },
+                                {
+                                    "areaName": "內湖區",
+                                },
+                                {
+                                    "areaName": "南港區",
+                                },
+                                {
+                                    "areaName": "文山區",
+                                }
+                            ],  
+                        },
+                        {
+                            "cityName": "新北市",
+                            "areaList": [
+                                {
+                                    "areaName": "萬里區",
+                                },
+                                {
+                                    "areaName": "金山區",
+                                },
+                                {
+                                    "areaName": "板橋區",
+                                },
+                                {
+                                    "areaName": "汐止區",
+                                },
+                                {
+                                    "areaName": "深坑區",
+                                },
+                                {
+                                    "areaName": "石碇區",
+                                },
+                                {
+                                    "areaName": "瑞芳區",
+                                },
+                                {
+                                    "areaName": "平溪區",
+                                },
+                                {
+                                    "areaName": "雙溪區",
+                                },
+                                {
+                                    "areaName": "貢寮區",
+                                },
+                                {
+                                    "areaName": "新店區",
+                                },
+                                {
+                                    "areaName": "坪林區",
+                                },
+                                {
+                                    "areaName": "烏來區",
+                                },
+                                {
+                                    "areaName": "永和區",
+                                },
+                                {
+                                    "areaName": "中和區",
+                                },
+                                {
+                                    "areaName": "土城區",
+                                },
+                                {
+                                    "areaName": "三峽區",
+                                },
+                                {
+                                    "areaName": "樹林區",
+                                },
+                                {
+                                    "areaName": "鶯歌區",
+                                },
+                                {
+                                    "areaName": "三重區",
+                                },
+                                {
+                                    "areaName": "新莊區",
+                                },
+                                {
+                                    "areaName": "泰山區",
+                                },
+                                {
+                                    "areaName": "林口區",
+                                },
+                                {
+                                    "areaName": "蘆洲區",
+                                },
+                                {
+                                    "areaName": "五股區",
+                                },
+                                {
+                                    "areaName": "八里區",
+                                },
+                                {
+                                    "areaName": "淡水區",
+                                },
+                                {
+                                    "areaName": "三芝區",
+                                },
+                                {
+                                    "areaName": "石門區",
+                                }
+                            ],
+                        },
+                    ]
+                }
+            },
+        }
+        Vue.createApp(App).mount('#app')
+    </script>
+</body>
+</html>
