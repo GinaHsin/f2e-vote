@@ -30,9 +30,6 @@
                 </select>
                 <select class="area" name="area" v-model="select.area">
                     <option value="">請選擇</option>
-                    <option v-for="a in cityList.find((c) =>
-                        c.cityName === select.city).areaList" 
-                       :key="a.areaName" :value="a.areaName">{{ a.areaName }}</option>
                 </select>
                 <select class="village" name="village">
                     <option value="">請選擇</option>
